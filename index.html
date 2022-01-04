@@ -1,0 +1,72 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+
+    <script src="js/class/break_eternity.js"></script>
+    <script src="js/class/Element.js"></script>
+
+    <script src="js/saves.js"></script>
+    <script src="js/calc.js"></script>
+
+    <script src="js/data/elements.js"></script>
+    <script src="js/data/formats.js"></script>
+    <script src="js/data/tabs.js"></script>
+
+    <script src="js/content/temp.js"></script>
+
+    <script src="js/content/upgs.js"></script>
+    <script src="js/content/supersymmetry.js"></script>
+    <script src="js/content/story.js"></script>
+
+    <script src="js/main.js"></script>
+
+    <title>Universe Time</title>
+</head>
+<body onload="loadGame()">
+    <input id="copy" style="position: absolute; top: 0; left: 0; user-select: all; visibility: hidden;">
+    <div id='app'>
+        <div style="border: solid 3px white; height: 100px; line-height: 350%; margin-bottom: 15px;">
+            <div style="font-size: 18px">Your universe time is <h2 id="uni_time" style="font-weight: bold;">0s</h2> old</div>
+            <div>You have <b id="spacetime">0</b> spacetime, which appends to <b id="spacetimeEff">0</b> of Universe time</div>
+        </div><div class="table_center" style="height: calc(100% - 170px); margin-bottom: 15px;">
+            <div style="border: solid 3px white; width: 250px; height: 100%; margin-right: 15px; overflow-y: auto;">
+                <div id="tabs_table"></div>
+            </div><div style="border: solid 3px white; width: calc(100% - 277px); height: calc(100% - 10px); overflow-y: auto; padding-top: 10px;">
+                <div id="stabs_table"></div><br>
+                <div id="tab_div_0">
+                    <div id="stab_div_0_0">
+                        <div id="upgs_st_table" class="table_center"></div>
+                    </div><div id="stab_div_0_1">
+                        You have <h2 id="inflation">1</h2> (x<span id="inflationGain">1</span>/s) Inflation, translated to <h2 id="inflationEff">1</h2>x multiplier on spacetime gain
+                    </div>
+                </div><div id="tab_div_1">
+                    WIP
+                </div><div id="tab_div_2">
+                    Breaking Supersymmetry will reset everything except Universe time<br>
+                    <button class="btn full" id="susyBtn" onclick="susy()">Break Supersymmetry for <b id="rSSgain">???</b> Supersymmetry Particles</button>
+                    <div id="susyDiv">
+                        You have <h2 id="susyAmt">0</h2> Supersymmetry Particle, which generates <h2 id="susyEff">0</h2> Supersymmetry Powers each time<br><br>
+                        <div id="susyPowDiv0">You have <h2 id="susyPow0">0</h2> Squark, translated to <h2 id="susyPowEff0">1</h2>x multiplier on spacetime gain</div>
+                        <div id="susyPowDiv1">You have <h2 id="susyPow1">0</h2> Slepton, translated to <h2 id="susyPowEff1">1</h2>x speed on inflation glow</div>
+                        <div id="susyPowDiv2">You have <h2 id="susyPow2">0</h2> Chargino, translated to <h2 id="susyPowEff2">1</h2>x multiplier on universe time formula</div>
+                    </div>
+                </div><div id="tab_div_3">
+                    <button class="btn" onclick="save()">Save</button>
+                    <button class="btn" onclick="if (confirm('Are you sure you want to RESET your progress to new game?')) {wipe(); save(); location.reload()}">Hard Reset</button>
+                    <button class="btn" onclick="exporty()">Export</button>
+                    <button class="btn" onclick="export_copy()">Export to clipboard</button>
+                    <button class="btn" onclick="importy()">Import</button><br><br>
+                </div>
+            </div>
+        </div><div class="table_center" style="justify-content:space-between;">
+            <div id="barStart" style="width: 220px; text-align: left;">0s</div>
+            <div id="era"></div>
+            <div id="barEnd" style="width: 220px; text-align: right;">0s</div>
+        </div><div id="bar">
+            <div id="bar_progress"></div>
+        </div>
+    </div>
+</body>
+</html>
