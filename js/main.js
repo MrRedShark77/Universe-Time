@@ -13,6 +13,7 @@ tmp_update.push(_=>{
 el.update.main = _=>{
     tmp.el.uni_time.setTxt(formatTime(player.uniTime))
     tmp.el.spacetimeEff.setTxt(formatTime(tmp.calcUniTime))
+    tmp.el.spacetimeSoft.setHTML(tmp.stSoftcaps>0?` (softcapped${tmp.stSoftcaps>1?"<sup>"+tmp.stSoftcaps+"</sup>":""})`:"")
     tmp.el.spacetime.setTxt(format(player.spacetime,1)+" "+formatGain(player.spacetime,tmp.stGain))
 
     if (tmp.tab == 0 && tmp.stab[0] == 1) {
@@ -27,12 +28,21 @@ const FUNCS = {
         let x = player.spacetime.div(1e43)
         if (hasUpg("st",5)) x = x.mul(tmp.upgs_eff.st[5])
         if (player.story > 1) x = x.mul(tmp.susy.powerEff[2])
+
+        tmp.stSoftcaps = 0
+        for (let i = 0; i <= 8; i++) {
+            let s = 1e3**i*1e-24
+            if (x.lt(s)) break
+            x = x.softcap(s,0.5**(i*2+1),0)
+            tmp.stSoftcaps++
+        }
         return x
     },
     stGain() {
         let x = E(hasUpg("st",0)?1:0).mul(tmp.inflationEff)
         if (hasUpg("st",1)) x = x.mul(tmp.upgs_eff.st[1])
         if (hasUpg("st",2)) x = x.mul(20)
+        if (hasUpg("inf",0)) x = x.mul(tmp.upgs_eff.inf[0])
         if (player.story > 1) x = x.mul(tmp.susy.powerEff[0])
         return x
     },
@@ -49,6 +59,7 @@ const FUNCS = {
         eff() {
             let x = player.inflation.max(1).log10().add(1).pow(0.5)
             if (hasUpg("st",4)) x = x.pow(2)
+            if (hasUpg("st",6)) x = x.pow(tmp.upgs_eff.st[6])
             return x
         },
     },
@@ -87,7 +98,7 @@ function format(ex, acc=4, max=9, type='sc') {
                 }
                 let m = ex.div(E(10).pow(e))
                 let be = e.log10().gte(9)
-                return neg+(be?'':m.toFixed(4)+"×")+'10^'+(be?"(":"")+format(e, 0, max, "sc")+(be?")":"")
+                return neg+(be?'':m.toFixed(4)+"×")+'10^'+(be&&e.log10().gte(max)?"(":"")+format(e, 0, max, "sc")+(be&&e.log10().gte(max)?")":"")
             }
         case "st":
             if (e.lt(3)) {

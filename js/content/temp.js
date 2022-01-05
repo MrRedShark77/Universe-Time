@@ -1,11 +1,13 @@
 var tmp = {
     stGain: E(0),
+    stSoftcaps: 0,
     calcUniTime: E(0),
     tab: 0,
     stab: [0],
     story_percent: 0,
     upgs_eff: {
         st: [],
+        inf: [],
     },
     susy: {
         powerGain: [],

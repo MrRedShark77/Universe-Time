@@ -12,7 +12,7 @@ const SUSY = {
             let x = E(1)
             let p = player.susy.powers[i]
             if (i == 0) x = p.add(1).root(3)
-            if (i == 1) x = p.add(1).root(4)
+            if (i == 1) x = p.add(1).root(4).softcap(10,2/3,0)
             if (i == 2) x = p.add(1).root(2)
             return x
         },
@@ -23,7 +23,8 @@ function getSusyResetGain() {
     let x = player.spacetime.div(1e9).max(0)
     if (x.lt(1)) return E(0)
     x = x.root(2)
-    return x.floor()
+    if (hasUpg("st",7)) x = x.mul(tmp.upgs_eff.st[7])
+    return x.softcap(1e3,0.6,0).floor()
 }
 
 function susy() {
@@ -37,7 +38,8 @@ function susy() {
 
 function restePreSusy() {
     player.spacetime = E(0)
-    player.inflation = E(1)
+    if (hasUpg("inf",1)) player.inflation = player.inflation.root(2)
+    else player.inflation = E(1)
     player.upgs.st = []
 
     for (let x = 0; x < 3; x++) player.susy.powers[x] = E(0)

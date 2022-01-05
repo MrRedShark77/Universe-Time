@@ -19,6 +19,7 @@ function getPlayerData() {
         story: 0,
         upgs: {
             st: [],
+            inf: [],
         },
         inflation: E(1),
         susy: {

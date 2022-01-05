@@ -28,7 +28,7 @@ const UPGS = {
                 cost: E(300),
             },{
                 unl() { return player.story >= 1 },
-                desc: `Spacetime add base from Inflation glow.`,
+                desc: `Spacetime adds to Inflation growth's base.`,
                 cost: E(1e5),
                 effect() {
                     let x = player.spacetime.add(1).log10().pow(0.75).div(2)
@@ -53,9 +53,73 @@ const UPGS = {
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
+            },{
+                unl() { return player.story >= 2 && player.susy.times > 1 },
+                desc: `Raise Inflation's effect based on Slepton.`,
+                cost: E(1e11),
+                effect() {
+                    let x = player.susy.powers[1].add(1).log10().add(1).root(6)
+                    return x
+                },
+                effDesc(x) { return "^"+format(x) },
+            },{
+                unl() { return player.story >= 2 && player.susy.times > 2 },
+                desc: `Universe time boost Supersymmetry particles gain.`,
+                cost: E(1e16),
+                effect() {
+                    let x = player.uniTime.mul(1e44).add(1).log10().root(1.5)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
             },
         ],
-    }
+    },
+    inf: {
+        res: "Inflation",
+        id: "inf",
+        canBuy(x) {
+            return player.inflation.gte(this.ctn[x].cost)
+        },
+        buy(x) {
+            if (this.canBuy(x) && !player.upgs[this.id].includes(x)) {
+                player.inflation = player.inflation.div(this.ctn[x].cost)
+                player.upgs[this.id].push(x)
+            }
+        },
+        ctn: [
+            {
+                unl() { return player.susy.times > 0 },
+                desc: `Universe time boost spacetime gain at a reduced rate.`,
+                cost: E("e3600"),
+                effect() {
+                    let x = player.uniTime.mul(1e44).add(1).log10().add(1).pow(1.25)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+            },{
+                unl() { return player.susy.times > 0 },
+                desc: `Keep ^0.5 of Inflation gained on reset.`,
+                cost: E("e7200"),
+            },
+        ],
+    },
+    /*
+    inf: {
+        res: "Inflation",
+        id: "inf",
+        canBuy(x) {
+            return player.inflation.gte(this.ctn[x].cost)
+        },
+        buy(x) {
+            if (this.canBuy(x) && !player.upgs[this.id].includes(x)) {
+                player.inflation = player.inflation.sub(this.ctn[x].cost)
+                player.upgs[this.id].push(x)
+            }
+        },
+        ctn: [
+
+        ],
+    },
     /*
     {
         desc: `Placeholder.`,
@@ -90,6 +154,7 @@ function updateUpgsHTML(x) {
 el.update.upgs = _=>{
     if (tmp.tab == 0) {
         if (tmp.stab[0] == 0) updateUpgsHTML("st")
+        if (tmp.stab[0] == 1) updateUpgsHTML("inf")
     }
 }
 
