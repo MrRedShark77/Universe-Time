@@ -20,13 +20,15 @@ function getPlayerData() {
         upgs: {
             st: [],
             inf: [],
+            ft: [],
         },
         inflation: E(1),
         susy: {
             particles: E(0),
             powers: [E(0),E(0),E(0)],
             times: 0,
-        }
+        },
+        fabricTime: E(0),
     }
     return x
 }

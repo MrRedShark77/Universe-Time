@@ -19,7 +19,7 @@ const UPGS = {
                 desc: `Spacetime boost its gain.`,
                 cost: E(15),
                 effect() {
-                    let x = player.spacetime.add(1).root(4)
+                    let x = player.spacetime.add(1).root(4).softcap(1e5,0.5,0)
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
@@ -88,7 +88,7 @@ const UPGS = {
         },
         ctn: [
             {
-                unl() { return player.susy.times > 0 },
+                unl() { return player.susy.times > 1 },
                 desc: `Universe time boost spacetime gain at a reduced rate.`,
                 cost: E("e3600"),
                 effect() {
@@ -97,9 +97,62 @@ const UPGS = {
                 },
                 effDesc(x) { return format(x)+"x" },
             },{
-                unl() { return player.susy.times > 0 },
+                unl() { return player.susy.times > 1 },
                 desc: `Keep ^0.5 of Inflation gained on reset.`,
                 cost: E("e7200"),
+            },{
+                unl() { return player.susy.times > 1 },
+                desc: `Universe time's formula softcap is weaker based on Inflation.`,
+                cost: E("e1e7"),
+                effect() {
+                    let x = E(0.9).pow(player.inflation.log10().add(1).log10().root(2)).toNumber();
+                    return x
+                },
+                effDesc(x) { return format((1-x)*100)+"% weaker" },
+            },
+        ],
+    },
+    ft: {
+        res: "Fabric of time",
+        id: "ft",
+        canBuy(x) {
+            return player.fabricTime.gte(this.ctn[x].cost)
+        },
+        buy(x) {
+            if (this.canBuy(x) && !player.upgs[this.id].includes(x)) {
+                player.fabricTime = player.fabricTime.sub(this.ctn[x].cost)
+                player.upgs[this.id].push(x)
+            }
+        },
+        ctn: [
+            {
+                desc: `Gain more spacetime based on the fabric of time.`,
+                cost: E(50),
+                effect() {
+                    let x = player.fabricTime.add(1).pow(0.75)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+            },{
+                desc: `Gain more fabric of time based on supersymmetry particles.`,
+                cost: E(100),
+                effect() {
+                    let x = player.susy.particles.add(1).log10().add(1).pow(1.5)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+            },{
+                desc: `Supersymmetry's effect exponent is increased based on the fabric of time.`,
+                cost: E(1000),
+                effect() {
+                    let x = player.fabricTime.add(1).log10().root(3)
+                    return x
+                },
+                effDesc(x) { return "^2 → ^"+format(x.add(2)) },
+            },{
+                unl() { return player.susy.times > 0 },
+                desc: `Gain 10% of Supersymmetry particles gained on reset.`,
+                cost: E(10000),
             },
         ],
     },
@@ -155,6 +208,7 @@ el.update.upgs = _=>{
     if (tmp.tab == 0) {
         if (tmp.stab[0] == 0) updateUpgsHTML("st")
         if (tmp.stab[0] == 1) updateUpgsHTML("inf")
+        if (tmp.stab[0] == 2) updateUpgsHTML("ft")
     }
 }
 

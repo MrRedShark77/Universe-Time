@@ -3,6 +3,8 @@ var date = Date.now();
 var player
 
 tmp_update.push(_=>{
+    tmp.ftGain = FUNCS.fabricTimeGain()
+
     tmp.inflationGain = FUNCS.inflation.gain()
     tmp.inflationEff = FUNCS.inflation.eff()
 
@@ -16,10 +18,15 @@ el.update.main = _=>{
     tmp.el.spacetimeSoft.setHTML(tmp.stSoftcaps>0?` (softcapped${tmp.stSoftcaps>1?"<sup>"+tmp.stSoftcaps+"</sup>":""})`:"")
     tmp.el.spacetime.setTxt(format(player.spacetime,1)+" "+formatGain(player.spacetime,tmp.stGain))
 
-    if (tmp.tab == 0 && tmp.stab[0] == 1) {
-        tmp.el.inflation.setTxt(format(player.inflation,1))
-        tmp.el.inflationGain.setTxt(format(tmp.inflationGain))
-        tmp.el.inflationEff.setTxt(format(tmp.inflationEff))
+    if (tmp.tab == 0) {
+        if (tmp.stab[0] == 1) {
+            tmp.el.inflation.setTxt(format(player.inflation,1))
+            tmp.el.inflationGain.setTxt(format(tmp.inflationGain))
+            tmp.el.inflationEff.setTxt(format(tmp.inflationEff))
+        }
+        if (tmp.stab[0] == 2) {
+            tmp.el.fabricTime.setTxt(format(player.fabricTime,1)+" "+formatGain(player.fabricTime,tmp.ftGain))
+        }
     }
 }
 
@@ -29,11 +36,14 @@ const FUNCS = {
         if (hasUpg("st",5)) x = x.mul(tmp.upgs_eff.st[5])
         if (player.story > 1) x = x.mul(tmp.susy.powerEff[2])
 
+        let p = 0.5, q = 2
+        if (hasUpg("inf",2)) p = p**tmp.upgs_eff.inf[2], q = q*tmp.upgs_eff.inf[2]
+
         tmp.stSoftcaps = 0
         for (let i = 0; i <= 8; i++) {
             let s = 1e3**i*1e-24
             if (x.lt(s)) break
-            x = x.softcap(s,0.5**(i*2+1),0)
+            x = x.softcap(s,p**(i*q+1),0)
             tmp.stSoftcaps++
         }
         return x
@@ -44,6 +54,7 @@ const FUNCS = {
         if (hasUpg("st",2)) x = x.mul(20)
         if (hasUpg("inf",0)) x = x.mul(tmp.upgs_eff.inf[0])
         if (player.story > 1) x = x.mul(tmp.susy.powerEff[0])
+        if (hasUpg("ft",0)) x = x.mul(tmp.upgs_eff.ft[0])
         return x
     },
     inflation: {
@@ -62,6 +73,17 @@ const FUNCS = {
             if (hasUpg("st",6)) x = x.pow(tmp.upgs_eff.st[6])
             return x
         },
+    },
+    fabricTimeGain() {
+        if (player.uniTime.lt(1e-21)) return E(0)
+        let e = player.uniTime.mul(1e21).max(1).log10()
+        if (e.gte(1)) {
+            if (hasUpg("st",3)) e = e.add(0.5)
+        }
+        let x = E(2).pow(e).sub(1)
+
+        if (hasUpg("ft",1)) x = x.mul(tmp.upgs_eff.ft[1])
+        return x
     },
 }
 
@@ -125,6 +147,7 @@ function format(ex, acc=4, max=9, type='sc') {
 
 function formatTime(ex) {
     ex = E(ex)
+    if (ex.gte(31557600)) return format(ex.div(31557600),4,12)+" years"
     if (ex.gte(1)) return format(ex,4,12)+"s"
     if (ex.gte(1e-3)) return format(ex.mul(1e3),4,12)+"ms"
     if (ex.gte(1e-6)) return format(ex.mul(1e6),4,12)+"µs"

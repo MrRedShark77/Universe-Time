@@ -8,11 +8,13 @@ var tmp = {
     upgs_eff: {
         st: [],
         inf: [],
+        ft: [],
     },
     susy: {
         powerGain: [],
         powerEff: [],
     },
+    fabricTime: E(0),
 }
 
 var tmp_update = []

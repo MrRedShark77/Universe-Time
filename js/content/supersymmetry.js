@@ -1,6 +1,8 @@
 const SUSY = {
     eff() {
-        let x = player.susy.particles.max(0).pow(2)
+        let p = E(2)
+        if (hasUpg("ft",2)) p = p.add(tmp.upgs_eff.ft[2])
+        let x = player.susy.particles.max(0).pow(p)
         return x
     },
     powers: {
@@ -40,6 +42,7 @@ function restePreSusy() {
     player.spacetime = E(0)
     if (hasUpg("inf",1)) player.inflation = player.inflation.root(2)
     else player.inflation = E(1)
+    player.fabricTime = E(0)
     player.upgs.st = []
 
     for (let x = 0; x < 3; x++) player.susy.powers[x] = E(0)

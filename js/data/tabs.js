@@ -7,6 +7,7 @@ const TABS = [
     {title: "Main", group:[
         {title: "Spacetime"},
         {title: "Inflation", unl() { return player.story>=1 }},
+        {title: "Fabric Time", unl() { return player.uniTime.gte(1e-21) }},
     ]},
     {title: "Story"},
     {title: "Supersymmetry", unl() { return player.story>=2 }},
