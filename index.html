@@ -17,6 +17,7 @@
     <script src="js/content/temp.js"></script>
 
     <script src="js/content/upgs.js"></script>
+    <script src="js/content/quarks.js"></script>
     <script src="js/content/supersymmetry.js"></script>
     <script src="js/content/story.js"></script>
 
@@ -34,6 +35,7 @@
             <div style="border: solid 3px white; width: 250px; height: 100%; margin-right: 15px; overflow-y: auto;">
                 <div id="tabs_table"></div>
             </div><div style="border: solid 3px white; width: calc(100% - 277px); height: calc(100% - 10px); overflow-y: auto; padding-top: 10px;">
+                <div id="over_stabs_table"></div><br>
                 <div id="stabs_table"></div><br>
                 <div id="tab_div_0">
                     <div id="stab_div_0_0">
@@ -46,15 +48,17 @@
                         <div id="upgs_ft_table" class="table_center"></div>
                     </div>
                 </div><div id="tab_div_1">
-                    WIP
-                </div><div id="tab_div_2">
-                    Breaking Supersymmetry will reset everything except Universe time<br>
+                    Breaking Supersymmetry will reset everything except Universe time<br><br>
                     <button class="btn full" id="susyBtn" onclick="susy()">Break Supersymmetry for <b id="rSSgain">???</b> Supersymmetry Particles</button>
                     <div id="susyDiv">
                         You have <h2 id="susyAmt">0</h2> Supersymmetry Particle, which generates <h2 id="susyEff">0</h2> Supersymmetry Powers each time<br><br>
                         <div id="susyPowDiv0">You have <h2 id="susyPow0">0</h2> Squark, translated to <h2 id="susyPowEff0">1</h2>x multiplier on spacetime gain</div>
                         <div id="susyPowDiv1">You have <h2 id="susyPow1">0</h2> Slepton, translated to <h2 id="susyPowEff1">1</h2>x speed on inflation growth</div>
                         <div id="susyPowDiv2">You have <h2 id="susyPow2">0</h2> Chargino, translated to <h2 id="susyPowEff2">1</h2>x multiplier on universe time formula</div>
+                    </div>
+                </div><div id="tab_div_2">
+                    <div id="stab_div_0_0">
+
                     </div>
                 </div><div id="tab_div_3">
                     <button class="btn" onclick="save()">Save</button>

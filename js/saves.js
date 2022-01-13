@@ -29,6 +29,7 @@ function getPlayerData() {
             times: 0,
         },
         fabricTime: E(0),
+        quarks: E(0),
     }
     return x
 }
@@ -89,7 +90,7 @@ function exporty() {
     window.URL = window.URL || window.webkitURL;
     let a = document.createElement("a")
     a.href = window.URL.createObjectURL(file)
-    a.download = "Test Save.txt"
+    a.download = "Universe Time.txt"
     a.click()
 }
 

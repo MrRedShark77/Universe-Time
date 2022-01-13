@@ -3,7 +3,7 @@ var tmp = {
     stSoftcaps: 0,
     calcUniTime: E(0),
     tab: 0,
-    stab: [0],
+    stab: [0,0,0,0],
     story_percent: 0,
     upgs_eff: {
         st: [],
@@ -14,7 +14,7 @@ var tmp = {
         powerGain: [],
         powerEff: [],
     },
-    fabricTime: E(0),
+    quarks: {}
 }
 
 var tmp_update = []

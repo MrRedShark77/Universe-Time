@@ -59,7 +59,8 @@ const UPGS = {
                 cost: E(1e11),
                 effect() {
                     let x = player.susy.powers[1].add(1).log10().add(1).root(6)
-                    return x
+                    if (hasUpg("ft",4)) x = x.pow(2)
+                    return x//.softcap(4,0.5,0)
                 },
                 effDesc(x) { return "^"+format(x) },
             },{
@@ -71,6 +72,14 @@ const UPGS = {
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
+            },{
+                unl() { return player.uniTime.gte(1e-21) },
+                desc: `The fabric of time gain's exponent is increased by 2.`,
+                cost: E(1e60),
+            },{
+                unl() { return player.uniTime.gte(1e-21) },
+                desc: `Unlock Quarks. (coming soon)`,
+                cost: E('e550'),
             },
         ],
     },
@@ -109,6 +118,15 @@ const UPGS = {
                     return x
                 },
                 effDesc(x) { return format((1-x)*100)+"% weaker" },
+            },{
+                unl() { return player.uniTime.gte(1e-21) },
+                desc: `Inflation boost the fabric of time gain.`,
+                cost: E("ee16"),
+                effect() {
+                    let x = player.inflation.log10().add(1).root(4)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
             },
         ],
     },
@@ -150,9 +168,14 @@ const UPGS = {
                 },
                 effDesc(x) { return "^2 → ^"+format(x.add(2)) },
             },{
-                unl() { return player.susy.times > 0 },
                 desc: `Gain 10% of Supersymmetry particles gained on reset.`,
                 cost: E(10000),
+            },{
+                desc: `Spacetime Upgrade 7 is twice as effective.`,
+                cost: E(1e6),
+            },{
+                desc: `Raise Spacetime & Supersymmetry particles gains to the 1.1th power.`,
+                cost: E(1e11),
             },
         ],
     },

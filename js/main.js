@@ -55,6 +55,8 @@ const FUNCS = {
         if (hasUpg("inf",0)) x = x.mul(tmp.upgs_eff.inf[0])
         if (player.story > 1) x = x.mul(tmp.susy.powerEff[0])
         if (hasUpg("ft",0)) x = x.mul(tmp.upgs_eff.ft[0])
+        
+        if (hasUpg("ft",5)) x = x.pow(1.1)
         return x
     },
     inflation: {
@@ -78,11 +80,12 @@ const FUNCS = {
         if (player.uniTime.lt(1e-21)) return E(0)
         let e = player.uniTime.mul(1e21).max(1).log10()
         if (e.gte(1)) {
-            if (hasUpg("st",3)) e = e.add(0.5)
+            if (hasUpg("st",8)) e = e.add(2)
         }
         let x = E(2).pow(e).sub(1)
 
         if (hasUpg("ft",1)) x = x.mul(tmp.upgs_eff.ft[1])
+        if (hasUpg("inf",3)) x = x.mul(tmp.upgs_eff.inf[3])
         return x
     },
 }

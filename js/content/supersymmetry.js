@@ -14,7 +14,7 @@ const SUSY = {
             let x = E(1)
             let p = player.susy.powers[i]
             if (i == 0) x = p.add(1).root(3)
-            if (i == 1) x = p.add(1).root(4).softcap(10,2/3,0)
+            if (i == 1) x = p.add(1).root(4).softcap(10,2/3,0).softcap(1e10,0.5,2)
             if (i == 2) x = p.add(1).root(2)
             return x
         },
@@ -26,6 +26,7 @@ function getSusyResetGain() {
     if (x.lt(1)) return E(0)
     x = x.root(2)
     if (hasUpg("st",7)) x = x.mul(tmp.upgs_eff.st[7])
+    if (hasUpg("ft",5)) x = x.pow(1.1)
     return x.softcap(1e3,0.6,0).floor()
 }
 
@@ -59,9 +60,10 @@ tmp_update.push(_=>{
 })
 
 el.update.susy = _=>{
-    if (tmp.tab == 2) {
+    if (tmp.tab == 1) {
         tmp.el.rSSgain.setTxt(format(tmp.susy.resetGain,0))
         tmp.el.susyDiv.setDisplay(player.susy.times>0)
+        tmp.el.susyBtn.setDisplay(!hasUpg("ft",3))
         tmp.el.susyBtn.setClasses({btn: true, full: true, locked: tmp.susy.resetGain.lt(1)})
         if (player.susy.times>0) {
             tmp.el.susyAmt.setTxt(format(player.susy.particles,0))
