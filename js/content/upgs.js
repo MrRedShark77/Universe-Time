@@ -73,13 +73,13 @@ const UPGS = {
                 },
                 effDesc(x) { return format(x)+"x" },
             },{
-                unl() { return player.uniTime.gte(1e-21) },
+                unl() { return player.story>=3 },
                 desc: `The fabric of time gain's exponent is increased by 2.`,
                 cost: E(1e60),
             },{
-                unl() { return player.uniTime.gte(1e-21) },
-                desc: `Unlock Quarks. (coming soon)`,
-                cost: E('e550'),
+                unl() { return hasUpg("st",9) },
+                desc: `haha you found a secret before quark version<br><img src="images/hidden1.png">`,
+                cost: E(1/0),
             },
         ],
     },
@@ -119,7 +119,7 @@ const UPGS = {
                 },
                 effDesc(x) { return format((1-x)*100)+"% weaker" },
             },{
-                unl() { return player.uniTime.gte(1e-21) },
+                unl() { return player.story>=3 },
                 desc: `Inflation boost the fabric of time gain.`,
                 cost: E("ee16"),
                 effect() {

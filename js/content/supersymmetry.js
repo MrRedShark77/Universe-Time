@@ -26,6 +26,7 @@ function getSusyResetGain() {
     if (x.lt(1)) return E(0)
     x = x.root(2)
     if (hasUpg("st",7)) x = x.mul(tmp.upgs_eff.st[7])
+    if (player.story > 3) x = x.mul(tmp.quarks.effs[1])
     if (hasUpg("ft",5)) x = x.pow(1.1)
     return x.softcap(1e3,0.6,0).floor()
 }

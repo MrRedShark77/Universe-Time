@@ -1,6 +1,6 @@
 const STORY = {
-    eras: ["Time Begins","Inflation","Post-Inflation"],
-    progress: [E(0),E(1e-39),E(1e-32),E(1e-6)],
+    eras: ["Time Begins","Inflation","Post-Inflation","The fabric of Time","Quark","Unknown"],
+    progress: [E(0),E(1e-39),E(1e-32),E(1e-21),E(1e-12),E(1)],
 }
 
 function calcStoryPercent() {

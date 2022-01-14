@@ -21,6 +21,7 @@ function getPlayerData() {
             st: [],
             inf: [],
             ft: [],
+            qu: [],
         },
         inflation: E(1),
         susy: {

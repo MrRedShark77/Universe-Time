@@ -14,7 +14,11 @@ var tmp = {
         powerGain: [],
         powerEff: [],
     },
-    quarks: {}
+    quarks: {
+        rewards: E(0),
+        types: [E(0),E(0),E(0)],
+        effs: [E(1),E(1),E(1)],
+    },
 }
 
 var tmp_update = []

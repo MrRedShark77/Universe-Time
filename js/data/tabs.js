@@ -7,10 +7,10 @@ const TABS = [
     {title: "Main", group:[
         {title: "Spacetime"},
         {title: "Inflation", unl() { return player.story>=1 }},
-        {title: "Fabric Time", unl() { return player.uniTime.gte(1e-21) }},
+        {title: "Fabric Time", unl() { return player.story>=3 }},
     ]},
     {title: "Supersymmetry", unl() { return player.story>=2 }},
-    {title: "Quarks", unl() { return hasUpg("st",9) && false }, over: `You have <h2 id="quarkAmt">0</h2> quarks`, group: [
+    {title: "Quarks", unl() { return player.story>=4 }, over: `You have <h2 id="quarkAmt">0</h2> quarks`, group: [
         {title: "Rewards"},
         {title: "Upgrades"},
     ]},

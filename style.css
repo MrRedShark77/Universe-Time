@@ -114,6 +114,32 @@ h2 {
 	cursor: default;
 }
 
+.reward {
+	position: relative;
+	width: 100%;
+	min-height: 160px;
+	margin: 5px 0px;
+}
+
+.reward > div {
+	transform: translate(-50%, -50%);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+}
+
+.reward.proton {
+	background: linear-gradient(0deg, #00000000 0%, rgba(255,0,0,0.2) 20%, rgba(255,0,0,0.2) 80%, #00000000 100%);
+}
+
+.reward.neutron {
+	background: linear-gradient(0deg, #00000000 0%, rgba(117, 117, 117, 0.2) 20%, rgba(117, 117, 117, 0.2) 80%, #00000000 100%);
+}
+
+.reward.electron {
+	background: linear-gradient(0deg, #00000000 0%, rgba(0, 0, 255, 0.2) 20%, rgba(0, 0, 255, 0.2) 80%, #00000000 100%);
+}
+
 [tooltip] {
 	position: relative;
 	z-index: 2;
