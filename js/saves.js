@@ -31,6 +31,7 @@ function getPlayerData() {
         },
         fabricTime: E(0),
         quarks: E(0),
+        rewards: E(0),
     }
     return x
 }

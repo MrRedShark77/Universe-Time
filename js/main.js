@@ -63,11 +63,13 @@ const FUNCS = {
         gain() {
             if (player.story < 1) return E(1)
             let x = E(10)
+            let e = E(1)
             if (hasUpg("st",3)) x = x.add(tmp.upgs_eff.st[3])
             if (hasUpg("st",4)) x = x.add(tmp.upgs_eff.st[4])
 
-            if (player.story > 1) x = x.pow(tmp.susy.powerEff[1])
-            return x
+            if (player.story > 1) e = e.mul(tmp.susy.powerEff[1])
+            if (hasUpg("qu",3)) e = e.pow(1.1)
+            return x.pow(e)
         },
         eff() {
             let x = player.inflation.max(1).log10().add(1).pow(0.5)
@@ -84,6 +86,7 @@ const FUNCS = {
         }
         let x = E(2).pow(e).sub(1)
 
+        if (player.story > 3) x = x.mul(tmp.quarks.effs[0])
         if (hasUpg("ft",1)) x = x.mul(tmp.upgs_eff.ft[1])
         if (hasUpg("inf",3)) x = x.mul(tmp.upgs_eff.inf[3])
         return x

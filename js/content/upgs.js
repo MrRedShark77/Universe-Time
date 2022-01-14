@@ -176,6 +176,57 @@ const UPGS = {
             },{
                 desc: `Raise Spacetime & Supersymmetry particles gains to the 1.1th power.`,
                 cost: E(1e11),
+            },{
+                unl() { return player.story >= 4 },
+                desc: `Reward's requirement is cheaper based on the fabric of time.`,
+                cost: E(1e38),
+                effect() {
+                    let x = E(1.01).pow(player.fabricTime.add(1).log10().root(2))
+                    return x
+                },
+                effDesc(x) { return format(x)+"x cheaper" },
+            },
+        ],
+    },
+    qu: {
+        res: "Quarks",
+        id: "qu",
+        canBuy(x) {
+            return player.quarks.gte(this.ctn[x].cost)
+        },
+        buy(x) {
+            if (this.canBuy(x) && !player.upgs[this.id].includes(x)) {
+                player.quarks = player.quarks.sub(this.ctn[x].cost)
+                player.upgs[this.id].push(x)
+            }
+        },
+        ctn: [
+            {
+                desc: `Gain more quarks based on Inflation.`,
+                cost: E(1.5e3),
+                effect() {
+                    let x = player.inflation.add(1).log10().add(1).log10().add(1)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+            },{
+                desc: `Triple quarks gain for each upgrade bought.`,
+                cost: E(1e5),
+                effect() {
+                    let x = E(3).pow(player.upgs.qu.length)
+                    return x
+                },
+            },{
+                desc: `Gain more quarks based on supersymmetry particles.`,
+                cost: E(2.5e7),
+                effect() {
+                    let x = player.susy.particles.add(1).log10().add(1)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+            },{
+                desc: `Raise inflation's exponent to the 1.1th power.`,
+                cost: E(1e18),
             },
         ],
     },
@@ -232,6 +283,9 @@ el.update.upgs = _=>{
         if (tmp.stab[0] == 0) updateUpgsHTML("st")
         if (tmp.stab[0] == 1) updateUpgsHTML("inf")
         if (tmp.stab[0] == 2) updateUpgsHTML("ft")
+    }
+    if (tmp.tab == 2) {
+        if (tmp.stab[2] == 1) updateUpgsHTML("qu")
     }
 }
 
