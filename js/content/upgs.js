@@ -203,7 +203,7 @@ const UPGS = {
         ctn: [
             {
                 desc: `Gain more quarks based on Inflation.`,
-                cost: E(1.5e3),
+                cost: E(300),
                 effect() {
                     let x = player.inflation.add(1).log10().add(1).log10().add(1)
                     return x

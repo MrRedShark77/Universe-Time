@@ -43,7 +43,11 @@ const FUNCS = {
         for (let i = 0; i <= 8; i++) {
             let s = 1e3**i*1e-24
             if (x.lt(s)) break
-            x = x.softcap(s,p**(i*q+1),0)
+            if (i==8) {
+                x = x.softcap(s,0.01,0)
+            } else {
+                x = x.softcap(s,p**(i*q+1),0)
+            }
             tmp.stSoftcaps++
         }
         return x
@@ -57,7 +61,7 @@ const FUNCS = {
         if (hasUpg("ft",0)) x = x.mul(tmp.upgs_eff.ft[0])
         
         if (hasUpg("ft",5)) x = x.pow(1.1)
-        return x
+        return x.softcap('e8000',0.9,2)
     },
     inflation: {
         gain() {
