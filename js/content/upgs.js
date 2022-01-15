@@ -150,7 +150,7 @@ const UPGS = {
                 },
                 effDesc(x) { return format(x)+"x" },
             },{
-                unl() { return player.susy.times > 1 },
+                unl() { return player.story >= 6 },
                 desc: `Protons are 25% stronger.`,
                 cost: E("ee460"),
             },
@@ -212,6 +212,7 @@ const UPGS = {
                 },
                 effDesc(x) { return format(x)+"x cheaper" },
             },{
+                unl() { return player.story >= 4 },
                 desc: `Raise Quarks gain to the 1.025th power.`,
                 cost: E(1e100),
             },
@@ -318,6 +319,7 @@ const UPGS = {
                 desc: `Raise the fabric of time to the 1.1th power.`,
                 cost: E(1e13),
             },{
+                unl() { return player.story >= 6 },
                 desc: `Electrons are 2.5% stronger.`,
                 cost: E(1e19),
             },
