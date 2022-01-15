@@ -32,7 +32,7 @@ const QUARKS = {
             x = q.add(1).pow(r.mul(1/6)).softcap(1e10,0.5,2)
         }
         if (i == 1) {
-            x = expMult(q.add(1),r.root(2)).div(10).softcap(1e100,0.5,2).softcap('e15000',0.75,2)
+            x = expMult(q.add(1),r.root(2)).div(10).softcap(1e100,0.5,2).softcap('e15000',0.75,2).softcap('e32000',0.75,2)
         }
         if (i == 2) {
             x = q.max(1).log10().add(1).pow(r)

@@ -54,7 +54,7 @@ const FUNCS = {
             x = x.softcap(31557600,0.01,0)
             tmp.stSoftcaps++
         }
-        return x
+        return x.min(4.34548152e17)
     },
     stGain() {
         let x = E(hasUpg("st",0)?1:0).mul(tmp.inflationEff)
