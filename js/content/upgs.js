@@ -241,7 +241,7 @@ const UPGS = {
                 effDesc(x) { return format(x)+"x" },
             },{
                 desc: `Triple quarks gain for each upgrade bought.`,
-                cost: E(1e5),
+                cost: E(5e4),
                 effect() {
                     let x = E(3).pow(player.upgs.qu.length)
                     return x
