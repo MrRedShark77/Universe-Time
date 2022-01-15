@@ -13,6 +13,7 @@ const TABS = [
     {title: "Quarks", unl() { return player.story>=4 }, over: `You have <h2 id="quarkAmt">0</h2> quarks`, group: [
         {title: "Rewards"},
         {title: "Upgrades"},
+        {title: "Atoms", unl() { return player.story>=5 }},
     ]},
     {title: "Options"},
 ]

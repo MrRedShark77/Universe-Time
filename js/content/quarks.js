@@ -4,6 +4,10 @@ const QUARKS = {
         if (hasUpg("qu",0)) x = x.mul(tmp.upgs_eff.qu[0])
         if (hasUpg("qu",1)) x = x.mul(tmp.upgs_eff.qu[1])
         if (hasUpg("qu",2)) x = x.mul(tmp.upgs_eff.qu[2])
+        if (hasUpg("st",10)) x = x.mul(tmp.upgs_eff.st[10])
+        if (hasUpg("at",0)) x = x.mul(tmp.upgs_eff.at[0])
+
+        if (hasUpg("ft",7)) x = x.pow(1.025)
         return x
     },
     getFT() {
@@ -28,16 +32,24 @@ const QUARKS = {
             x = q.add(1).pow(r.mul(1/6)).softcap(1e10,0.5,2)
         }
         if (i == 1) {
-            x = expMult(q.add(1),r.root(2)).div(10).softcap(1e100,0.5,2)
+            x = expMult(q.add(1),r.root(2)).div(10).softcap(1e100,0.5,2).softcap('e15000',0.75,2)
         }
         if (i == 2) {
             x = q.max(1).log10().add(1).pow(r)
         }
         return x
     },
+    atomGain() {
+        let x = E(1.1).pow(player.rewards)
+        if (hasUpg("qu",5)) x = x.mul(tmp.upgs_eff.qu[5])
+        if (hasUpg("st",11)) x = x.mul(tmp.upgs_eff.st[11])
+        return x
+    },
 }
 
 tmp_update.push(_=>{
+    tmp.quarks.atomGain = QUARKS.atomGain()
+
     tmp.quarks.ft = QUARKS.getFT()
     player.rewards = player.rewards.max(QUARKS.calcRewards())
     tmp.quarks.nextReward = QUARKS.nextReward()
@@ -57,6 +69,9 @@ el.update.quarks = _=>{
                 tmp.el['reward'+x].setTxt(format(tmp.quarks.types[x],0))
                 tmp.el['rewardEff'+x].setTxt(format(tmp.quarks.effs[x],1))
             }
+        }
+        if (tmp.stab[2] == 2) {
+            tmp.el.atoms.setTxt(format(player.atoms,1)+" "+formatGain(player.atoms,tmp.quarks.atomGain))
         }
     }
 }

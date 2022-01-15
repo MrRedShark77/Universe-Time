@@ -80,6 +80,24 @@ const UPGS = {
                 unl() { return hasUpg("st",9) },
                 desc: `haha you found a secret before quark version<br><img src="images/hidden1.png">`,
                 cost: E(1/0),
+            },{
+                unl() { return player.story >= 4 },
+                desc: `Gain more quarks based on spacetime.`,
+                cost: E('e8100'),
+                effect() {
+                    let x = player.spacetime.add(1).log10().add(1).pow(0.8)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+            },{
+                unl() { return player.story >= 5 },
+                desc: `Gain more atoms based on spacetime.`,
+                cost: E('e37000'),
+                effect() {
+                    let x = player.spacetime.add(1).log10().add(1).pow(0.75)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
             },
         ],
     },
@@ -185,6 +203,9 @@ const UPGS = {
                     return x
                 },
                 effDesc(x) { return format(x)+"x cheaper" },
+            },{
+                desc: `Raise Quarks gain to the 1.025th power.`,
+                cost: E(1e100),
             },
         ],
     },
@@ -227,6 +248,55 @@ const UPGS = {
             },{
                 desc: `Raise inflation's exponent to the 1.1th power.`,
                 cost: E(1e18),
+            },{
+                desc: `Speed inflation growth based on rewards.`,
+                cost: E(1e38),
+                effect() {
+                    let x = E(1.25).pow(player.rewards)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+            },{
+                unl() { return player.story >= 5 },
+                desc: `Gain more atoms based on Universe Time.`,
+                cost: E(1e54),
+                effect() {
+                    let x = player.uniTime.mul(1e44).add(1).root(15)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+            },
+        ],
+    },
+    at: {
+        res: "Atoms",
+        id: "at",
+        canBuy(x) {
+            return player.atoms.gte(this.ctn[x].cost)
+        },
+        buy(x) {
+            if (this.canBuy(x) && !player.upgs[this.id].includes(x)) {
+                player.atoms = player.atoms.sub(this.ctn[x].cost)
+                player.upgs[this.id].push(x)
+            }
+        },
+        ctn: [
+            {
+                desc: `Gain more quarks based on atoms.`,
+                cost: E(3e4),
+                effect() {
+                    let x = player.atoms.add(1).root(3)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
+            },{
+                desc: `Spacetime gain softcap is weaker based on atoms.`,
+                cost: E(2e8),
+                effect() {
+                    let x = E(0.9).pow(player.atoms.add(1).log10().root(2))
+                    return x.toNumber()
+                },
+                effDesc(x) { return format((1-x)*100)+"% weaker" },
             },
         ],
     },
@@ -286,6 +356,7 @@ el.update.upgs = _=>{
     }
     if (tmp.tab == 2) {
         if (tmp.stab[2] == 1) updateUpgsHTML("qu")
+        if (tmp.stab[2] == 2) updateUpgsHTML("at")
     }
 }
 

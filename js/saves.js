@@ -22,16 +22,18 @@ function getPlayerData() {
             inf: [],
             ft: [],
             qu: [],
+            at: [],
         },
         inflation: E(1),
         susy: {
             particles: E(0),
-            powers: [E(0),E(0),E(0)],
+            powers: [E(0),E(0),E(0),E(0)],
             times: 0,
         },
         fabricTime: E(0),
         quarks: E(0),
         rewards: E(0),
+        atoms: E(0),
     }
     return x
 }

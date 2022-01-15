@@ -14,8 +14,13 @@ const SUSY = {
             let x = E(1)
             let p = player.susy.powers[i]
             if (i == 0) x = p.add(1).root(3)
-            if (i == 1) x = p.add(1).root(4).softcap(10,2/3,0).softcap(1e10,0.5,2)
+            if (i == 1) {
+                x = p.add(1).root(4)
+                if (player.story>=5) x = x.pow(tmp.susy.powerEff[3]||1)
+                x = x.softcap(10,2/3,0).softcap(1e10,0.5,2)
+            }
             if (i == 2) x = p.add(1).root(2)
+            if (i == 3) x = p.add(1).log10().div(6000).add(1).root(3)
             return x
         },
     },
@@ -47,14 +52,14 @@ function restePreSusy() {
     player.fabricTime = E(0)
     player.upgs.st = []
 
-    for (let x = 0; x < 3; x++) player.susy.powers[x] = E(0)
+    for (let x = 0; x < 4; x++) player.susy.powers[x] = E(0)
 }
 
 tmp_update.push(_=>{
     tmp.susy.resetGain = getSusyResetGain()
     tmp.susy.eff = SUSY.eff()
 
-    for (let x = 0; x < 3; x++) {
+    for (let x = 0; x < 4; x++) {
         tmp.susy.powerGain[x] = SUSY.powers.gain(x)
         tmp.susy.powerEff[x] = SUSY.powers.effect(x)
     }
@@ -70,12 +75,12 @@ el.update.susy = _=>{
             tmp.el.susyAmt.setTxt(format(player.susy.particles,0))
             tmp.el.susyEff.setTxt(format(tmp.susy.eff,0))
 
-            for (let x = 0; x < 3; x++) {
-                let unl = player.susy.times > x
+            for (let x = 0; x < 4; x++) {
+                let unl = x!=3?player.susy.times > x:player.story>=5
                 tmp.el["susyPowDiv"+x].setDisplay(unl)
                 if (unl) {
                     tmp.el["susyPow"+x].setTxt(format(player.susy.powers[x],2)+" "+formatGain(player.susy.powers[x], tmp.susy.powerGain[x]))
-                    tmp.el["susyPowEff"+x].setTxt(format(tmp.susy.powerEff[x],2))
+                    tmp.el["susyPowEff"+x].setTxt(format(tmp.susy.powerEff[x],x==3?4:2))
                 }
             }
         }

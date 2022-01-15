@@ -50,6 +50,10 @@ const FUNCS = {
             }
             tmp.stSoftcaps++
         }
+        if (x.gte(31557600)) {
+            x = x.softcap(31557600,0.01,0)
+            tmp.stSoftcaps++
+        }
         return x
     },
     stGain() {
@@ -61,7 +65,10 @@ const FUNCS = {
         if (hasUpg("ft",0)) x = x.mul(tmp.upgs_eff.ft[0])
         
         if (hasUpg("ft",5)) x = x.pow(1.1)
-        return x.softcap('e8000',0.9,2)
+
+        let s = 0.9
+        if (hasUpg("at",1)) s **= tmp.upgs_eff.at[1]
+        return x.softcap('e8000',s,2)
     },
     inflation: {
         gain() {
@@ -72,6 +79,7 @@ const FUNCS = {
             if (hasUpg("st",4)) x = x.add(tmp.upgs_eff.st[4])
 
             if (player.story > 1) e = e.mul(tmp.susy.powerEff[1])
+            if (hasUpg("qu",4)) e = e.mul(tmp.upgs_eff.qu[4])
             if (hasUpg("qu",3)) e = e.pow(1.1)
             return x.pow(e)
         },

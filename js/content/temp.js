@@ -10,6 +10,7 @@ var tmp = {
         inf: [],
         ft: [],
         qu: [],
+        at: [],
     },
     susy: {
         powerGain: [],
