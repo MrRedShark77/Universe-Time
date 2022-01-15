@@ -140,6 +140,52 @@ h2 {
 	background: linear-gradient(0deg, #00000000 0%, rgba(0, 0, 255, 0.2) 20%, rgba(0, 0, 255, 0.2) 80%, #00000000 100%);
 }
 
+#notify {
+	position: absolute;
+    left: calc(100% - 15px);
+    top: 20px;
+	transform: translate(-100%, 0);
+	width: 200px;
+	min-height: 10px;
+	border: solid 2px white;
+	background-color: rgba(255, 255, 255, 0.05);
+	padding: 7px 25px;
+	transition-duration: 0.75s;
+	z-index: 2;
+}
+
+#notify.hide {
+	opacity: 0;
+	left: calc(100% + 250px);
+}
+
+#end {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	z-index: 1;
+}
+
+#loadingDiv {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	background-color: #010b19;
+	z-index: 1;
+}
+
+#end2 {
+	transform: translate(-50%, -50%);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+}
+
 [tooltip] {
 	position: relative;
 	z-index: 2;

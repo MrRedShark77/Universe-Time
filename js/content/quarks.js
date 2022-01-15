@@ -27,6 +27,9 @@ const QUARKS = {
     effects(i) {
         let q = player.quarks
         let r = tmp.quarks.types[i]
+        if (hasUpg("inf",4) && i == 0) r = r.mul(1.25)
+        if (hasUpg("st",12) && i == 1) r = r.mul(1.1)
+        if (hasUpg("at",3) && i == 2) r = r.mul(1.025)
         let x = E(1)
         if (i == 0) {
             x = q.add(1).pow(r.mul(1/6)).softcap(1e10,0.5,2)
@@ -42,6 +45,7 @@ const QUARKS = {
     atomGain() {
         let x = E(1.1).pow(player.rewards)
         if (hasUpg("qu",5)) x = x.mul(tmp.upgs_eff.qu[5])
+        if (hasUpg("qu",6)) x = x.mul(tmp.upgs_eff.qu[6])
         if (hasUpg("st",11)) x = x.mul(tmp.upgs_eff.st[11])
         return x
     },

@@ -98,6 +98,10 @@ const UPGS = {
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
+            },{
+                unl() { return player.story>=6 },
+                desc: `Neutrons are 10% stronger.`,
+                cost: E('e111111'),
             },
         ],
     },
@@ -145,6 +149,10 @@ const UPGS = {
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
+            },{
+                unl() { return player.susy.times > 1 },
+                desc: `Protons are 25% stronger.`,
+                cost: E("ee460"),
             },
         ],
     },
@@ -265,6 +273,15 @@ const UPGS = {
                     return x
                 },
                 effDesc(x) { return format(x)+"x" },
+            },{
+                unl() { return player.story >= 5 },
+                desc: `Gain more atoms based on quarks.`,
+                cost: E(1e100),
+                effect() {
+                    let x = player.quarks.add(1).log10().add(1).pow(2)
+                    return x
+                },
+                effDesc(x) { return format(x)+"x" },
             },
         ],
     },
@@ -297,6 +314,12 @@ const UPGS = {
                     return x.toNumber()
                 },
                 effDesc(x) { return format((1-x)*100)+"% weaker" },
+            },{
+                desc: `Raise the fabric of time to the 1.1th power.`,
+                cost: E(1e13),
+            },{
+                desc: `Electrons are 2.5% stronger.`,
+                cost: E(1e19),
             },
         ],
     },

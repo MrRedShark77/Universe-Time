@@ -1,5 +1,5 @@
 const STORY = {
-    eras: ["Time Begins","Inflation","Post-Inflation","The fabric of Time","Quark","Post-Quark","Final","Unknown"],
+    eras: ["Time Begins","Inflation","Post-Inflation","The fabric of Time","Quark","Post-Quark","Final","The End"],
     progress: [E(0),E(1e-39),E(1e-32),E(1e-21),E(1e-12),E(1),E(9.46728e12),E(4.34548152e17)],
 }
 

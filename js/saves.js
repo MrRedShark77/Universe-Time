@@ -10,6 +10,14 @@ Decimal.prototype.softcap = function (start, power, mode) {
     return x
 }
 
+Decimal.prototype.modular=Decimal.prototype.mod=function (other){
+    other=E(other);
+    if (other.eq(0)) return E(0);
+    if (this.sign*other.sign==-1) return this.abs().mod(other.abs()).neg();
+    if (this.sign==-1) return this.abs().mod(other.abs());
+    return this.sub(this.div(other).floor().mul(other));
+};
+
 function expMult(a,b,base=10) { return E(a).gte(1) ? E(base).pow(E(a).log(base).pow(b)) : E(0) }
 
 function getPlayerData() {
@@ -34,6 +42,8 @@ function getPlayerData() {
         quarks: E(0),
         rewards: E(0),
         atoms: E(0),
+        time: 0,
+
     }
     return x
 }
@@ -75,9 +85,12 @@ function deepUndefinedAndDecimal(obj, data) {
     return obj
 }
 
-function save(){
-    if (localStorage.getItem("universeTimeSave") == '') wipe()
-    localStorage.setItem("universeTimeSave",btoa(JSON.stringify(player)))
+function save(force=false, copy=false){
+    if (!tmp.ended || force) {
+        if (localStorage.getItem("universeTimeSave") == '') wipe()
+        localStorage.setItem("universeTimeSave",btoa(JSON.stringify(player)))
+        if (tmp.saving < 1 && !copy) {addNotify("Game Saved", 3); tmp.saving++}
+    }
 }
 
 function load(x){
@@ -106,7 +119,7 @@ function importy() {
             wipe()
             JSON.parse(atob(loadgame))
             load(loadgame)
-            save()
+            save(true)
             location.reload()
         } catch (error) {
             
@@ -116,12 +129,14 @@ function importy() {
 }
 
 function export_copy() {
+    save(false, true);
     let copyText = document.getElementById('copy')
     copyText.value = btoa(JSON.stringify(player))
     copyText.style.visibility = "visible"
     copyText.select();
     document.execCommand("copy");
     copyText.style.visibility = "hidden"
+    addNotify("Copied to clipboard", 3)
 }
 
 function loadGame() {
@@ -129,6 +144,9 @@ function loadGame() {
     load(localStorage.getItem("universeTimeSave"))
     updateTemp()
     setupHTML()
-    setInterval(save,60000)
     setInterval(loop, 50)
+    setInterval(save,60000)
+    setTimeout(_=>{
+        tmp.open = true
+    },1500)
 }

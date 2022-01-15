@@ -21,6 +21,13 @@ var tmp = {
         types: [E(0),E(0),E(0)],
         effs: [E(1),E(1),E(1)],
     },
+    ended: false,
+    ready: false,
+    endTime: 0,
+    open: false,
+    time: 0,
+    notify: [],
+    saving: 0,
 }
 
 var tmp_update = []

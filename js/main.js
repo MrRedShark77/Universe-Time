@@ -10,9 +10,23 @@ tmp_update.push(_=>{
 
     tmp.stGain = FUNCS.stGain()
     tmp.calcUniTime = FUNCS.calcUniTime()
+
+    tmp.ended = player.uniTime.gte(4.34548152e17) && tmp.ready
 })
 
 el.update.main = _=>{
+    if (!tmp.ready && tmp.open) {
+        tmp.el.loadingDiv.changeStyle("opacity", Math.max(1-tmp.time/0.2,0))
+        if (tmp.time>0.2) {
+            tmp.el.loadingDiv.setDisplay(false)
+            tmp.ready = true
+        }
+    }
+
+    tmp.el.end.setDisplay(tmp.ended)
+    tmp.el.end.changeStyle("opacity", Math.min(tmp.endTime/4,1))
+    tmp.el.timeCompleted.setTxt(formatTime2(player.time))
+
     tmp.el.uni_time.setTxt(formatTime(player.uniTime))
     tmp.el.spacetimeEff.setTxt(formatTime(tmp.calcUniTime))
     tmp.el.spacetimeSoft.setHTML(tmp.stSoftcaps>0?` (softcapped${tmp.stSoftcaps>1?"<sup>"+tmp.stSoftcaps+"</sup>":""})`:"")
@@ -27,6 +41,9 @@ el.update.main = _=>{
         if (tmp.stab[0] == 2) {
             tmp.el.fabricTime.setTxt(format(player.fabricTime,1)+" "+formatGain(player.fabricTime,tmp.ftGain))
         }
+    }
+    if (tmp.tab == 3) {
+        tmp.el.timePlayed.setTxt(formatTime2(player.time))
     }
 }
 
@@ -101,6 +118,8 @@ const FUNCS = {
         if (player.story > 3) x = x.mul(tmp.quarks.effs[0])
         if (hasUpg("ft",1)) x = x.mul(tmp.upgs_eff.ft[1])
         if (hasUpg("inf",3)) x = x.mul(tmp.upgs_eff.inf[3])
+
+        if (hasUpg("at",2)) x = x.pow(1.1)
         return x
     },
 }
@@ -178,8 +197,43 @@ function formatTime(ex) {
     return format(ex.mul(1e44),4,12)+"tP"
 }
 
+function formatTime2(ex,type="s") {
+    ex = E(ex)
+    if (ex.gte(86400)) return format(ex.div(86400).floor(),0)+":"+formatTime2(ex.mod(86400),'d')
+    if (ex.gte(3600)||type=="d") return (ex.div(3600).gte(10)||type!="d"?"":"0")+format(ex.div(3600).floor(),0)+":"+formatTime2(ex.mod(3600),'h')
+    if (ex.gte(60)||type=="h") return (ex.div(60).gte(10)||type!="h"?"":"0")+format(ex.div(60).floor(),0)+":"+formatTime2(ex.mod(60),'m')
+    return (ex.gte(10)||type!="m" ?"":"0")+ex.toFixed(1)
+}
+
 function formatGain(amt, gain) {
     let f = format
 	if (gain.gte(1e100) && gain.gt(amt)) return "(+"+format(gain.div(amt).max(1).log10().times(50),4)+" OoM/s)"
 	else return "(+"+f(gain)+"/sec)"
+}
+
+function addNotify(text, duration=3) {
+    tmp.notify.push({text: text, duration: duration});
+    if (tmp.notify.length == 1) updateNotify()
+}
+
+function removeNotify() {
+    if (tmp.saving > 0 && tmp.notify[0]?tmp.notify[0].text="Game Saving":false) tmp.saving--
+    if (tmp.notify.length <= 1) tmp.notify = []
+    let x = []
+    for (let i = 1; i < tmp.notify.length; i++) x.push(tmp.notify[i])
+    tmp.notify = x
+    tmp.el.notify.setVisible(false)
+    updateNotify()
+}
+
+function updateNotify() {
+    if (tmp.notify.length > 0) {
+        tmp.el.notify.setHTML(tmp.notify[0].text)
+        tmp.el.notify.setVisible(true)
+        tmp.el.notify.setClasses({hide: false})
+        setTimeout(_=>{
+            tmp.el.notify.setClasses({hide: true})
+            setTimeout(removeNotify, 750)
+        }, tmp.notify[0].duration*1000)
+    }
 }

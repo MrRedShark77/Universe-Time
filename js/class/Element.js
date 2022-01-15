@@ -15,6 +15,13 @@ class Element {
 		new Element(id).setTxt(txt);
 	}
 
+	setVisible(bool) {
+		this.el.style.visibility = bool ? "visible" : "hidden";
+	}
+	static setVisible(id, bool) {
+		new Element(id).setVisible(bool);
+	}
+
 	setHTML(html) {
 		this.el.innerHTML = html;
 	}
